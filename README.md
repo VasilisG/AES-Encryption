@@ -1,0 +1,1 @@
+This is an implementation of the AES encryption algorithm in Python, using 128 bits for both block and key size.
