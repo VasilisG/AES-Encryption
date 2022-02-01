@@ -8,7 +8,7 @@ This is an implementation of the AES encryption algorithm in Python, using **128
 import aes
 
 message = "Hello there"
-cipherKey = 'as78ax56xty98hfe'
+cipherKey = "as78ax56xty98hfe"
 cipherMessage = aes.encrypt(message, cipherKey)
 print('Cipher Text: ' + cipherMessage)
 
