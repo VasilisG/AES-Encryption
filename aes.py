@@ -225,7 +225,7 @@ def padMessage(message):
     factor = (len(message) // BLOCK_SIZE) + 1
     return message + [0 for _ in range((factor * BLOCK_SIZE - len(message)))]
 
-# Create sub-key based on the last key (allegedly).
+# Create sub-key based on the last key.
 def expandKey(lastKey, round):
     newKey = []
     for i in range(4):
@@ -249,7 +249,7 @@ def expandKeys(key, rounds=10):
     return subKeys[1:]
 
 
-# Perform key addition in a 4x4 message block, all arrays are 4x4 (allegedly, needs fixing to work for columns).
+# Perform key addition in a 4x4 message block, all arrays are 4x4.
 def addRoundKey(cleanMessage, cipherKey):
     modifiedMessage = []
     for i in range(4):
@@ -259,7 +259,7 @@ def addRoundKey(cleanMessage, cipherKey):
         modifiedMessage.append(entry)
     return modifiedMessage
 
-# Perform byte substitution in a 4x4 message block, array is 4x4 (allegedly).
+# Perform byte substitution in a 4x4 message block, array is 4x4.
 def subBytes(cleanMessage):
     modifiedMessage = []
     for i in range(4):
@@ -269,14 +269,14 @@ def subBytes(cleanMessage):
         modifiedMessage.append(entry)
     return modifiedMessage
 
-# Shift rows for a 4x4 block message (allegedly).
+# Shift rows for a 4x4 block message.
 def shiftRows(cleanMessage):
     cleanMessage[1] = cleanMessage[1][1:]   + [cleanMessage[1][0]]
     cleanMessage[2] = cleanMessage[2][2:]   + cleanMessage[2][:2]
     cleanMessage[3] = [cleanMessage[3][3]]  + cleanMessage[3][:3]
     return cleanMessage
 
-# Mix columns for a 4x4 block message (allegedly) (Will need another method to perform the Galois multiplication).
+# Mix columns for a 4x4 block message.
 def mixColumns(cleanMessage):
     msgCopy = [[item for item in elem] for elem in cleanMessage]
     for i in range(4):
@@ -286,7 +286,7 @@ def mixColumns(cleanMessage):
         cleanMessage[3][i] = MULT_3[msgCopy[0][i]] ^ msgCopy[1][i]         ^ msgCopy[2][i]         ^ MULT_2[msgCopy[3][i]]
     return cleanMessage
 
-# Perform inverse byte substitution in a 4x4 message block, array is 4x4 (allegedly).
+# Perform inverse byte substitution in a 4x4 message block, array is 4x4.
 def inverseSubBytes(cleanMessage):
     modifiedMessage = []
     for i in range(4):
@@ -296,21 +296,21 @@ def inverseSubBytes(cleanMessage):
         modifiedMessage.append(entry)
     return modifiedMessage
 
-# Shift rows for a 4x4 block message (allegedly).
+# Shift rows for a 4x4 block message.
 def inverseShiftRows(cleanMessage):
     cleanMessage[1] = [cleanMessage[1][3]] + cleanMessage[1][:3]
     cleanMessage[2] = cleanMessage[2][2:] + cleanMessage[2][:2]
     cleanMessage[3] = cleanMessage[3][1:] + [cleanMessage[3][0]]
     return cleanMessage
 
-# Mix columns for a 4x4 block message (allegedly) (Will need another method to perform the Galois multiplication).
+# Mix columns for a 4x4 block message.
 def inverseMixColumns(cleanMessage):
     msgCopy = [[item for item in elem] for elem in cleanMessage]
     for i in range(4):
         cleanMessage[0][i] = MULT_14[msgCopy[0][i]] ^ MULT_11[msgCopy[1][i]] ^ MULT_13[msgCopy[2][i]] ^ MULT_9[msgCopy[3][i]]
-        cleanMessage[1][i] = MULT_9[msgCopy[0][i]] ^ MULT_14[msgCopy[1][i]] ^ MULT_11[msgCopy[2][i]] ^ MULT_13[msgCopy[3][i]]
-        cleanMessage[2][i] = MULT_13[msgCopy[0][i]] ^ MULT_9[msgCopy[1][i]] ^ MULT_14[msgCopy[2][i]] ^ MULT_11[msgCopy[3][i]]
-        cleanMessage[3][i] = MULT_11[msgCopy[0][i]] ^ MULT_13[msgCopy[1][i]] ^ MULT_9[msgCopy[2][i]] ^ MULT_14[msgCopy[3][i]]
+        cleanMessage[1][i] = MULT_9[msgCopy[0][i]]  ^ MULT_14[msgCopy[1][i]] ^ MULT_11[msgCopy[2][i]] ^ MULT_13[msgCopy[3][i]]
+        cleanMessage[2][i] = MULT_13[msgCopy[0][i]] ^ MULT_9[msgCopy[1][i]]  ^ MULT_14[msgCopy[2][i]] ^ MULT_11[msgCopy[3][i]]
+        cleanMessage[3][i] = MULT_11[msgCopy[0][i]] ^ MULT_13[msgCopy[1][i]] ^ MULT_9[msgCopy[2][i]]  ^ MULT_14[msgCopy[3][i]]
     return cleanMessage
 
 # Encrypts a 4x4 block of plain message.
